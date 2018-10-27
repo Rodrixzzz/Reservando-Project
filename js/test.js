@@ -108,3 +108,13 @@ describe('Testeo de la función obtener Restaurantes', function(){
         expect(resultado.length).to.equal(3);
     })
 })
+describe('Testeo de las reservas', function(){
+	it('Al reservar para 3 personas, con un precio de $100 por persona, el precio base sera de $300',function(){
+        let reserva1 = new Reserva (new Date(2018, 9, 24, 11, 00), 3, 100, " ")
+        expect(reserva1.calcularPrecioBase()).to.equal(300);
+    })
+    it('Al reservar para 3 personas, con un precio de $100 por persona, en horario pico, dia de semana y con codigo de descuento DES15, el precio total sera de $267.75, ',function(){
+        let reserva1 = new Reserva (new Date(2018, 9, 24, 13, 00), 3, 100, "DES15")
+        expect(reserva1.calcularPrecioTotal()).to.equal(267.75);
+    })
+})
