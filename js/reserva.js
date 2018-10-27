@@ -10,9 +10,9 @@ Reserva.prototype.calcularPrecioBase = function calcularPB() {
 };
 
 Reserva.prototype.calcularPrecioTotal = function calcularPT() {
-  let precioConAdicional = this.calcularAdicionales();
-  let precioConDescuento = this.calcularDescuentos(precioConAdicional);
-  return precioConDescuento;
+  let adicional = this.calcularAdicionales();
+  let descuento = this.calcularDescuentos();
+  return this.calcularPrecioBase()+adicional-descuento;
 };
 
 Reserva.prototype.calcularAdicionales = function calcularAdici() {
@@ -24,20 +24,20 @@ Reserva.prototype.calcularAdicionales = function calcularAdici() {
   if (this.horario.getDay() === 0 || this.horario.getDay() === 6 || this.horario.getDay() === 5) {
     total += 10;
   }
-  return this.calcularPrecioBase() + ((this.calcularPrecioBase() * total) / 100);
+  return (this.calcularPrecioBase() * total) / 100;
 };
 
-Reserva.prototype.calcularDescuentos = function calcularDesc(precioConAdicional) {
+Reserva.prototype.calcularDescuentos = function calcularDesc() {
   let descuentoPorGrupo = obtenerPorcentajeGrupo(this.cantPersona);
   let descuentoPorCodigo = obtenerDescuentoCodigo(this.codDescuento,this.PrecioPersona);
   if(descuentoPorCodigo.EsPorcentaje)
   {
       let totalDescuento = descuentoPorGrupo+descuentoPorCodigo.cantidad;
-      return precioConAdicional - ((precioConAdicional*totalDescuento)/100)
+      return ((this.calcularPrecioBase()*totalDescuento)/100)
   }
   else{
-    let DescuentoParcial =  precioConAdicional - ((precioConAdicional*descuentoPorGrupo)/100)
-    return DescuentoParcial - descuentoPorCodigo.cantidad;
+    let DescuentoParcial =(this.calcularPrecioBase()*descuentoPorGrupo)/100;
+    return DescuentoParcial + descuentoPorCodigo.cantidad;
   }
 };
 
